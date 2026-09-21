@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Para Grecia ❤️</title>
+    <meta name="description" content="Un mensaje especial para Grecia.">
+
+    <!-- Open Graph: para que el link se vea lindo al compartirlo -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Para Grecia ❤️">
+    <meta property="og:description" content="No puedo evitar enamorarme de ti.">
+    <meta property="og:image" content="assets/img/foto1.jpeg">
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Carrusel de fotos (las slides se generan desde js/app.js) -->
+    <main class="carousel" aria-label="Fotos para Grecia"></main>
+
+    <!-- Flechas -->
+    <button class="arrow prev" aria-label="Foto anterior">❮</button>
+    <button class="arrow next" aria-label="Foto siguiente">❯</button>
+
+    <!-- Puntos de navegación -->
+    <div class="dots" role="tablist" aria-label="Ir a una foto"></div>
+
+    <!-- Subtítulo sincronizado con la música -->
+    <div id="subtitle" aria-live="polite"></div>
+
+    <!-- Música -->
+    <audio id="audio" controls autoplay preload="auto">
+        <source src="assets/audio/elvis-presley.mp3" type="audio/mpeg">
+        Tu navegador no puede reproducir audio.
+    </audio>
+
+    <script src="js/app.js" defer></script>
+</body>
+</html>

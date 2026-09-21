@@ -1,0 +1,217 @@
+/* =========================================================
+   Para Grecia — estilos del carrusel
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* ==================== CARRUSEL ==================== */
+
+.carousel {
+    position: fixed;
+    inset: 0;
+    background: #000;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    transition: opacity 1.2s ease;
+
+    pointer-events: none;
+}
+
+.slide.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.slide img,
+.slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* ==================== FLECHAS ==================== */
+
+.arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 55px;
+    height: 70px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: rgba(0, 0, 0, 0.45);
+    color: white;
+
+    font-size: 35px;
+    cursor: pointer;
+
+    z-index: 10;
+
+    transition: 0.3s;
+}
+
+.arrow:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.prev {
+    left: 20px;
+}
+
+.next {
+    right: 20px;
+}
+
+/* ==================== SUBTÍTULOS ==================== */
+
+#subtitle {
+    position: fixed;
+
+    left: 50%;
+    bottom: 75px;
+
+    transform: translateX(-50%);
+
+    width: 90%;
+    max-width: 1000px;
+
+    text-align: center;
+
+    color: white;
+
+    font-size: clamp(20px, 3vw, 34px);
+    font-weight: bold;
+
+    line-height: 1.3;
+
+    text-shadow:
+        2px 2px 4px #000,
+        -2px -2px 4px #000,
+        2px -2px 4px #000,
+        -2px 2px 4px #000;
+
+    z-index: 20;
+
+    transition: opacity 0.2s ease;
+}
+
+/* ==================== AUDIO ==================== */
+
+audio {
+    position: fixed;
+
+    left: 50%;
+    bottom: 12px;
+
+    transform: translateX(-50%);
+
+    width: 55%;
+    max-width: 320px;
+
+    height: 28px;
+
+    z-index: 30;
+
+    opacity: 0.65;
+}
+
+/* ==================== PUNTOS ==================== */
+
+.dots {
+    position: fixed;
+
+    bottom: 48px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    gap: 8px;
+
+    z-index: 20;
+}
+
+.dot {
+    width: 9px;
+    height: 9px;
+
+    border: none;
+    padding: 0;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.4);
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.dot.active {
+    background: white;
+    transform: scale(1.3);
+}
+
+/* ==================== MÓVIL ==================== */
+
+@media (max-width: 600px) {
+    .arrow {
+        width: 42px;
+        height: 55px;
+        font-size: 25px;
+    }
+
+    .prev {
+        left: 8px;
+    }
+
+    .next {
+        right: 8px;
+    }
+
+    #subtitle {
+        bottom: 70px;
+        font-size: 20px;
+    }
+
+    audio {
+        bottom: 10px;
+        width: 70%;
+        max-width: 280px;
+        height: 26px;
+    }
+
+    .dots {
+        bottom: 45px;
+        gap: 6px;
+    }
+
+    .dot {
+        width: 7px;
+        height: 7px;
+    }
+}
