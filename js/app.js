@@ -119,8 +119,10 @@ function showSlide(index) {
         if (video) {
             if (isActive) {
                 video.play().catch(() => { /* autoplay bloqueado: se usa el botón */ });
+                advanceAfterVideo(video);
             } else {
                 video.pause();
+                clearTimeout(videoAdvanceTimer);
             }
         }
     });
@@ -188,9 +190,32 @@ audio.addEventListener("ended", () => {
 const SLIDE_INTERVAL_MS = 6000;   // tiempo de cada foto en el carrusel
 
 let autoAdvanceTimer = null;
+let videoAdvanceTimer = null;
 
 function isVideoSlide(index) {
     return slides[index].querySelector("video") !== null;
+}
+
+/* Al llegar a la slide del video, espera a que se reproduzca una
+   vez completa y recién ahí avanza (wrappea a la primera imagen).
+   El video queda en loop mientras está en pantalla. */
+function advanceAfterVideo(video) {
+    clearTimeout(videoAdvanceTimer);
+
+    const advance = () => {
+        videoAdvanceTimer = setTimeout(() => {
+            clearTimeout(videoAdvanceTimer);
+            if (isVideoSlide(currentSlide)) {
+                changeSlide(1); // última slide -> vuelve a la primera
+            }
+        }, (video.duration && isFinite(video.duration)) ? video.duration * 1000 : 15000);
+    };
+
+    if (video.readyState >= 1 && video.duration && isFinite(video.duration)) {
+        advance();
+    } else {
+        video.addEventListener("loadedmetadata", advance, { once: true });
+    }
 }
 
 function startAutoAdvance() {
