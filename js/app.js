@@ -239,16 +239,20 @@ function stopAutoAdvance() {
 
    Refuerzo invisible: el PRIMER toque o tecla en cualquier parte de
    la página dispara la música si aún no sonó. Sin carteles, sin
-   pantallas: la página se ve igual. */
+   pantallas: la página se ve igual. Se escuchan pointerdown, click
+   y keydown: Chrome recomienda "click" porque los eventos que
+   cuentan como gesto de usuario varían entre navegadores. */
 function startMusicOnFirstGesture() {
     if (audio.paused) {
         audio.play().catch(() => { /* el gesto ya habilita el audio */ });
     }
     document.removeEventListener("pointerdown", startMusicOnFirstGesture);
+    document.removeEventListener("click", startMusicOnFirstGesture);
     document.removeEventListener("keydown", startMusicOnFirstGesture);
 }
 
 document.addEventListener("pointerdown", startMusicOnFirstGesture);
+document.addEventListener("click", startMusicOnFirstGesture);
 document.addEventListener("keydown", startMusicOnFirstGesture);
 
 /* ==================== Inicio ==================== */
