@@ -71,7 +71,7 @@ function buildSlides() {
 
         if (item.src.endsWith(".mp4")) {
             const video = document.createElement("video");
-            video.controls = true;
+            video.loop = true;           // el video del gato se repite hasta que navegue
             video.preload = "auto";
 
             const source = document.createElement("source");
@@ -127,6 +127,16 @@ function showSlide(index) {
 
     const dots = dotsContainer.querySelectorAll(".dot");
     dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+
+    /* Autoplay del carrusel: avanza en loop, pero se pausa
+       en la slide del video para que no se le escape. */
+    if (started) {
+        if (isVideoSlide(index)) {
+            stopAutoAdvance();
+        } else {
+            startAutoAdvance();
+        }
+    }
 }
 
 function changeSlide(direction) {
@@ -173,6 +183,58 @@ audio.addEventListener("timeupdate", () => {
 audio.addEventListener("ended", () => {
     subtitleEl.textContent = "";
     showSlide(0);
+});
+
+/* ==================== Autoplay (música + carrusel) ==================== */
+
+const SLIDE_INTERVAL_MS = 6000;   // tiempo de cada foto en el carrusel
+const startOverlay = document.querySelector("#start-overlay");
+
+let started = false;
+let autoAdvanceTimer = null;
+
+function isVideoSlide(index) {
+    return slides[index].querySelector("video") !== null;
+}
+
+function startAutoAdvance() {
+    stopAutoAdvance();
+    autoAdvanceTimer = setInterval(() => changeSlide(1), SLIDE_INTERVAL_MS);
+}
+
+function stopAutoAdvance() {
+    if (autoAdvanceTimer) {
+        clearInterval(autoAdvanceTimer);
+        autoAdvanceTimer = null;
+    }
+}
+
+/* Primer toque (o play manual en el reproductor): suena la música
+   y el carrusel arranca a avanzar solo. */
+function startExperience() {
+    if (started) return;
+    started = true;
+
+    startOverlay.classList.add("hidden");
+    setTimeout(() => startOverlay.remove(), 900);
+
+    /* El navegador exige una interacción del usuario para reproducir
+       audio con sonido: este primer toque la habilita. */
+    audio.play().catch(() => { /* autoplay con sonido bloqueado por el navegador */ });
+    startAutoAdvance();
+}
+
+startOverlay.addEventListener("click", startExperience);
+startOverlay.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        startExperience();
+    }
+});
+
+/* También arranca la experiencia si activa el reproductor a mano */
+audio.addEventListener("play", () => {
+    if (!started) startExperience();
 });
 
 /* ==================== Inicio ==================== */
