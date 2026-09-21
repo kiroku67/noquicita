@@ -230,6 +230,27 @@ function stopAutoAdvance() {
     }
 }
 
+/* ==================== Autoplay de la música ==================== */
+
+/* El <audio> ya lleva el atributo autoplay: el navegador lo intenta
+   al cargar. Pero los navegadores bloquean el audio con sonido en el
+   primer ingreso sin interacción previa del usuario, por política de
+   autoplay — TODO código está sujeto a eso, no hay forma de saltarla.
+
+   Refuerzo invisible: el PRIMER toque o tecla en cualquier parte de
+   la página dispara la música si aún no sonó. Sin carteles, sin
+   pantallas: la página se ve igual. */
+function startMusicOnFirstGesture() {
+    if (audio.paused) {
+        audio.play().catch(() => { /* el gesto ya habilita el audio */ });
+    }
+    document.removeEventListener("pointerdown", startMusicOnFirstGesture);
+    document.removeEventListener("keydown", startMusicOnFirstGesture);
+}
+
+document.addEventListener("pointerdown", startMusicOnFirstGesture);
+document.addEventListener("keydown", startMusicOnFirstGesture);
+
 /* ==================== Inicio ==================== */
 
 buildSlides();
